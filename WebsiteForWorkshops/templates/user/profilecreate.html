@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+{%extends "base.html"%}
+{%load crispy_forms_tags%}
+{% block content %}
+{%include "includes/navbar.html"%}
+<div class="signup-data container p-5">
+    <div class="content-section card text-dark p-5">
+            <form method="POST" enctype="multipart/form-data">
+                {%  csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Make your profile</legend>
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Submit Profile</button>
+                </div>
+            </form>
+            <div class="border-top pt-3">
+                <a href="{%url 'profile'%}">Select another profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SignIn</title>
+</head>
+<body>
+{%extends "base.html"%}
+{%block content%}
+{%include 'includes/navbar.html'%}
+{% load crispy_forms_tags %}
+
+<div class="signup-data container p-5  text-dark">
+    <div class="content-section p-5 card">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">SignIn</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">SignIn</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                <a href="{%url 'register'%}">does not have an account?Register!</a>
+            </small>
+        </div>
+    </div>
+</div>
+{%endblock%}
+</body>
+</html>

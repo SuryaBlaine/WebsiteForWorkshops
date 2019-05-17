@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Join</title>
+</head>
+<body>
+{%extends "base.html"%}
+{%load crispy_forms_tags%}
+{% block content %}
+{%include "includes/navbar.html"%}
+<div class="signup-data container p-5 text-dark">
+    <div class="content-section p-5 card">
+                <fieldset class="form-group">
+                    <legend class="">Join {{classroom.title}}</legend>
+                </fieldset>
+                <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>Fee</th>
+                                <th>Date</th>
+                                <th>Venue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                       
+                            <tr>
+                                <td>{{classroom.fee}} rs</td>
+                                <td>{{classroom.date_of_class}}</td>
+                                <td>{{classroom.venue}}</td>
+                            </tr>
+                        
+                        </tbody>
+                    </table>
+                    <hr>
+                    <p class="text-muted">
+                        {{classroom.additional_info}}
+                        
+                        <hr>
+
+                        {{classroom.description}}
+                    </p>
+                    <div class="buttons">
+                        <div class="border-top p-3">
+                            {%if user.studentprofile%}
+                                <a href="{%url 'joinclassroomview' pk=classroom.id%}" class="btn btn-outline-primary">Join</a>
+                            {%endif%}
+                            {%if classroom.host == user%}
+                                <a href="{%url 'editclassroomview' pk=classroom.id%}" class="btn btn-outline-primary">Edit</a>
+                                <a href="{%url 'deleteclassroomview' pk=classroom.id%}" class="btn btn-outline-danger">Delete</a>
+                                
+                                <div class="p-5">
+                                    <div class="header">
+                                        <h3>Students who joined this class</h3>
+
+                                    </div>
+                                    <div class="students"> <table class="table ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Username</th>
+                                                            <th>Email</th>
+                                                            <th>Number</th>
+                                                        </tr>
+                                                    </thead><tbody>
+                                                    {%for student in students%}  
+                                                        {%if student.classroom == classroom%}
+                                                        <tr>
+                                                            <td>{{student.user}} </td>
+                                                            <td>{{student.user.email}}</td>
+                                                            <td>{{student.user.studentprofile.number}}</td>
+                                                        </tr>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                                    </tbody>
+                                                </table>
+                                            
+                                    </div>
+                                    
+                                </div>
+                                
+                            {%endif%}
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

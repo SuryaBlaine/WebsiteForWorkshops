@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+</head>
+<body>
+{%extends "base.html"%}
+{%block content%}
+	{%include "includes/navbar.html"%}
+	<div class="wrap text-center">
+		<h1 class="display-1" style="padding-top: 150px;">Website For<br> Workshops</h1>
+		<div class="tex p-5" style="width: 70%;margin:auto;">
+		
+		{%if user.is_authenticated%}
+			<p class="text-light" style="">WebsiteForWorkshops is an online platform created to make teaching and attending workshops in colleges as easy as possible</p>
+		{%else%}
+			<p>You can get started by creating an account <a href="{%url 'register'%}" class="btn text-light btn-outline-success">Here</a> or login to your account <a href="{%url 'signin'%}" class="btn text-light btn-outline-success">Here.</a></p>
+		{%endif%}
+		</div>
+		
+	</div>
+{%endblock%}
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Classroom</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+</head>
+<body>
+{%extends "base.html"%}
+{%block content%}
+	{%include "includes/navbar.html"%}
+	<div class="wrap text-center">
+		<h1 class="display-1" style="padding-top: 200px;padding-bottom: 200px;">
+			Classroom 
+		</h1>		<hr><br>
+
+		{% if user.studentprofile %}
+		<div class="joined float-left" style="width:15%;margin-right: 10px;">
+					
+					<aside class="float-left text-light" style="border-right: 2px solid white">
+						<div class="search p-2">
+							<form method="POST">
+                        {%  csrf_token %}
+                        <fieldset class="form-group">
+                            <input type="text" name="srh" class="form-control" placeholder="Enter classroom ">
+                        </fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-outline-light" type="submit">Search</button>
+                        </div>
+                    </form>
+                    <div class="results">
+                    	{% for post in sr %}
+              
+                    <article class="media content-section">
+
+                    <div class="media-body mx-5">
+                        <div class="article-metadata">
+                          <a class="mr-2 btn btn-outline-light" href="{%url 'detailclassroomview' pk=post.id%}">{{ post.title }}</a><br>
+                          </div>
+                        <hr>
+                        <p class="article-content">{{ post.content }}</p>
+                      </div>
+                    </article>
+                    <hr>
+                
+                {% endfor %}
+                <div class="message-alert">
+                    {%  if messages %}
+                        {%  for message in messages %}
+                        <div class="alert alert-{{message.tags}} ">
+                            {{message}}
+                        </div>
+                        {% endfor %}
+                    {%  endif %}
+                </div>
+                    </div>
+						</div>
+						<h3>
+						Workshops you have joined recently
+					</h3>
+						<ul style="list-style: none;padding: 10px;">
+							{%for classroomjoin in classroomjoin%}
+								{%if classroomjoin.user == user%}
+									<li class="btn btn-outline-ligth"><a href="{%url 'detailclassroomview' pk=classroomjoin.classroom.id%}" class="text-light"> {{classroomjoin}}</a>,</li><br>
+								{%endif%}
+							{%endfor%}
+						</ul>				
+					</aside>
+				
+				</div>
+		<div class="wrap " style="font-family: 'Open Sans Condensed', sans-serif; width: 80%;float: right;">
+			
+			<h1 class="display-5">Top classrooms based on your instrests</h1><br>
+			<div class="classrooms" >
+				
+				
+				{%for classroom in classrooms%}
+				
+					<div class="row  m-5 p-5  text-light">
+						<div class="col-12">
+							<div class="header"><a href="{%url 'detailclassroomview' pk=classroom.id%}" class="btn ">
+								<h1 class="display-4 text-light">
+									{{classroom.title}}
+								</h1></a>								
+							</div>
+							<div class="bodydata p-2 bg-light text-dark">
+								<div class="host ">
+										<h4 class="muted float-right">Cunducted by {{classroom.host.username}}</h4>
+								</div>
+								<div class="teacher ">
+										<h4 class="muted float-left">Class taken by {{classroom.teacher.user.username}}</h4>
+								</div>
+								<div class="description p-5">
+									<h4>{{classroom.subtitle}}</h4>
+									<p>
+										{{classroom.description}}
+									</p>
+									
+								</div>
+								<div class="join">
+									<a href="{%url 'joinclassroomview' pk=classroom.id %}" class="btn btn-outline-primary text-dark">Book Seats</a>
+								</div>
+								</div>
+							
+
+							
+						</div>
+					</div>
+				{%endfor%}
+			</div>
+
+		{% endif %}
+		
+		{% if user.institutionprofile %}
+
+
+			<div class="wrap">
+				<div class="joined" style="width:25%;float: left;">
+					
+					<aside class="float-left text-light" style="border-right: 2px solid white"><div class="btn ">
+				<a href="{%url 'createclassroomview'%}" class="btn btn-outline-light">Host a classroom</a>
+			</div> 
+			<hr>
+						<h3>
+						Workshops you have created recently
+					</h3>
+						<ul style="list-style: none;padding: 10px;">
+							{%for cl in classrooms%}
+								{%if cl.host == user%}
+									<a href="{%url 'detailclassroomview' pk=cl.id%}" class="btn text-light"><li class="btn btn-outline-ligth">{{cl.title}},</li></a><br>
+								{%endif%}
+							{%endfor%}
+						</ul>				
+					</aside>
+				
+				</div>
+			<div class="wrap " style="font-family: 'Open Sans Condensed', sans-serif; width: 75%;float: right;">
+			
+			<h1 class="display-3">classrooms you hosted</h1><br>
+			<div class="classrooms" >
+				
+				
+				{%for classroom in classrooms%}
+				{%if classroom.host == user%}
+					<div class="row  m-5 p-5  text-light">
+						<div class="col-12">
+							<div class="header"><a href="{%url 'detailclassroomview' pk=classroom.id%}" class="btn text-light ">
+								<h1 class="display-5">
+									{{classroom.title}}
+								</h1></a>								
+							</div>
+							<div class="bodydata p-2 bg-light text-dark">
+								<div class="host ">
+										<h4 class="muted float-right">Cunducted by {{classroom.host.username}}</h4>
+								</div>
+								<div class="teacher ">
+										<h4 class="muted float-left">Class taken by {{classroom.teacher.user.username}}</h4>
+								</div>
+								<div class="description p-5">
+									<h4>{{classroom.subtitle}}</h4>
+									<p>
+										{{classroom.description}}
+									</p>
+									
+								</div>
+								<div class="edit">
+									<a href="{% url 'editclassroomview' pk=classroom.id %}" class="btn btn-outline-primary">edit</a>
+									<a href="{% url 'deleteclassroomview' pk=classroom.id %}" class="btn btn-outline-danger">Delete</a>
+								</div>
+								</div>
+							
+
+							
+						</div>
+					</div>
+					{%endif%}
+				{%endfor%}
+			</div>
+			</div>
+			
+
+		{% endif %}
+		{% if user.teacherprofile %}
+			<div class="wrap">
+				<div class="joined" style="width:25%;float: left;">
+					
+					<aside class="float-left text-light" style="border-right: 2px solid white"><div class="btn ">
+				<a href="{%url 'createclassroomview'%}" class="btn btn-outline-light">Host a classroom</a>
+			</div> 
+			<hr>
+						<h3>
+						Your classrooms
+					</h3>
+						<ul style="list-style: none;padding: 10px;">
+							{%for cl in classrooms%}
+								{%if cl.teacher.user == user%}
+									<a href="{%url 'detailclassroomview' pk=cl.id%}" class="btn text-light"><li class="btn btn-outline-ligth">{{cl.title}},</li></a><br>
+								{%endif%}
+							{%endfor%}
+						</ul>				
+					</aside>
+				
+				</div>
+			<div class="wrap " style="font-family: 'Open Sans Condensed', sans-serif; width: 75%;float: right;">
+			
+			<h1 class="display-3">classrooms you hosted</h1><br>
+			<div class="classrooms" >
+				
+				
+				{%for classroom in classrooms%}
+				{%if classroom.teacher.user == user%}
+					<div class="row  m-5 p-5  text-light">
+						<div class="col-12">
+							<div class="header"><a href="{%url 'detailclassroomview' pk=classroom.id%}" class="btn text-light ">
+								<h1 class="display-5">
+									{{classroom.title}}
+								</h1></a>								
+							</div>
+							<div class="bodydata p-2 bg-light text-dark">
+								<div class="host ">
+										<h4 class="muted float-right">Cunducted by {{classroom.host.username}}</h4>
+								</div>
+								<div class="teacher ">
+										<h4 class="muted float-left">Class taken by {{classroom.teacher.user.username}}</h4>
+								</div>
+								<div class="description p-5">
+									<h4>{{classroom.subtitle}}</h4>
+									<p>
+										{{classroom.description}}
+									</p>
+									
+								</div>
+								<div class="edit">
+									<a href="{% url 'editclassroomview' pk=classroom.id %}" class="btn btn-outline-primary">edit</a>
+									<a href="{% url 'deleteclassroomview' pk=classroom.id %}" class="btn btn-outline-danger">Decline</a>
+								</div>
+								</div>
+							
+
+							
+						</div>
+					</div>
+					{%endif%}
+					{%endfor%}
+		{% endif %}
+		</div>
+			
+	</div>
+{%endblock%}
+
+</body>
+</html>

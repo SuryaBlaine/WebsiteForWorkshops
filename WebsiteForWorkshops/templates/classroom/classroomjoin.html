@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Join</title>
+</head>
+<body>
+{%extends "base.html"%}
+{%load crispy_forms_tags%}
+{% block content %}
+{%include "includes/navbar.html"%}
+<div class="signup-data container p-5 text-dark">
+    <div class="content-section p-5 card">
+            <form method="POST" class="">
+                {%  csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Join {{classroom.title}}</legend>
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-success" type="submit">Join</button>
+                    <a href="{%url 'classroomhome'%}" class="text-danger btn btn-outline-danger">Cancel</a>
+                </div>
+                <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>Fee</th>
+                                <th>Date</th>
+                                <th>Venue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                       
+                            <tr>
+                                <td>{{classroom.fee}} rs</td>
+                                <td>{{classroom.date_of_class}}</td>
+                                <td>{{classroom.venue}}</td>
+                            </tr>
+                        
+                        </tbody>
+                    </table>
+                    <hr>
+                    <p class="text-muted">
+                        {{classroom.additional_info}}
+                        
+                        <hr>
+
+                        {{classroom.description}}
+                    </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
